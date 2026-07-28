@@ -3,3 +3,359 @@ main {
   margin: 0 auto;
   padding: 12px;
 }
+
+.day-detail h2 {
+  font-size: 1.1rem;
+  margin: 16px 0 4px;
+}
+
+.slot-section h3 {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin: 12px 0 4px;
+}
+
+.dose-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px; /* comfortable touch target */
+  padding: 0 4px;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  cursor: pointer;
+}
+
+.dose-row input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  accent-color: #2e9e44;
+}
+
+.dose-name {
+  font-weight: 600;
+}
+
+.dose-text {
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+.no-doses {
+  opacity: 0.6;
+}
+
+h1 {
+  font-size: 1.3rem;
+  margin: 8px 0 12px;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.month-label {
+  font-weight: 600;
+  flex: 1;
+  text-align: center;
+}
+
+.nav-btn,
+.today-btn {
+  min-width: 44px;
+  min-height: 36px;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  opacity: 0.5;
+  padding: 2px 0;
+}
+
+.day-cell {
+  min-height: 48px;
+  padding: 4px 2px 6px;
+  border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.day-cell.today {
+  border: 2px solid #4a7dff;
+}
+
+.day-cell.selected {
+  background: color-mix(in srgb, #4a7dff 15%, transparent);
+}
+
+.day-num {
+  font-size: 0.85rem;
+}
+
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3px;
+  max-width: 100%;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid #9a9aa2; /* gray hollow: pending, today or future */
+  box-sizing: border-box;
+}
+
+.dot.missed {
+  border-color: #d64545; /* red hollow: past day, unchecked */
+}
+
+.dot.checked {
+  border-color: #2e9e44;
+  background: #2e9e44; /* green filled */
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.supply {
+  margin-top: 24px;
+  padding-top: 8px;
+  border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.supply h3 {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin: 12px 0 4px;
+}
+
+.supply-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 36px;
+  padding: 0 4px;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.supply-count {
+  opacity: 0.8;
+  font-variant-numeric: tabular-nums;
+}
+
+.supply-count.done {
+  color: #2e9e44;
+  opacity: 1;
+}
+
+.med-row {
+  padding: 8px 4px;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.med-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.med-summary {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.med-delete {
+  border: none;
+  background: none;
+  color: inherit;
+  opacity: 0.5;
+  font-size: 1rem;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 36px;
+}
+
+.med-confirm {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.danger-btn {
+  min-height: 36px;
+  border: 1px solid #d64545;
+  border-radius: 8px;
+  background: #d64545;
+  color: #fff;
+  font-size: 0.9rem;
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+.med-error {
+  width: 100%;
+  color: #d64545;
+  font-size: 0.85rem;
+  margin: 4px 0 0;
+}
+
+.med-notice {
+  opacity: 0.6;
+}
+
+.add-med {
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-med h3 {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin: 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.field > span {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+.field input,
+.field select,
+.phase-row input,
+.phase-row select {
+  font: inherit;
+  padding: 8px;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+  min-height: 40px;
+}
+
+.field-row {
+  display: flex;
+  gap: 8px;
+}
+
+.phase-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.phase-row input {
+  width: 64px;
+}
+
+.preview {
+  background: color-mix(in srgb, #2e9e44 8%, transparent);
+  border: 1px solid color-mix(in srgb, #2e9e44 30%, transparent);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+}
+
+.preview p {
+  margin: 2px 0;
+}
+
+.med-saved {
+  color: #2e9e44;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.empty-state {
+  margin-top: 18vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.empty-state h2 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.empty-state p {
+  opacity: 0.7;
+  margin: 0;
+  max-width: 36ch;
+}
+
+.empty-state .today-btn {
+  padding: 0 16px;
+}
+
+.disclaimer {
+  margin-top: 32px;
+  padding: 8px 4px 16px;
+  font-size: 0.75rem;
+  opacity: 0.55;
+  text-align: center;
+}
+
+.add-med .today-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}

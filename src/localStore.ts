@@ -11,12 +11,14 @@ import {
 } from './storage'
 import type { MedDef } from './schedule'
 import type { Pet } from './pets'
+import type { BackupData } from './backup'
 
 // Local-first store: all state lives in browser storage on this device.
 // No accounts, no network — the free tier by design.
 export interface LocalStore {
   isChecked(doseId: string): boolean
   toggle(doseId: string): void
+  checks(): Checks
   meds(): MedDef[]
   addMed(med: MedDef): void
   deleteMed(medId: string): void
@@ -25,6 +27,7 @@ export interface LocalStore {
   updatePet(petId: string, fields: Omit<Pet, 'id'>): void
   deletePet(petId: string): void
   medsForPet(petId: string): MedDef[]
+  replaceAll(data: BackupData): void
 }
 
 export function createLocalStore(storage: StorageLike | null): LocalStore {
@@ -64,6 +67,7 @@ export function createLocalStore(storage: StorageLike | null): LocalStore {
 
   return {
     isChecked: (doseId) => checks()[doseId] !== undefined,
+    checks,
     toggle: (doseId) => {
       const next = { ...checks() }
       if (next[doseId] !== undefined) delete next[doseId]
@@ -94,5 +98,10 @@ export function createLocalStore(storage: StorageLike | null): LocalStore {
       persistPets(pets().filter((p) => p.id !== petId))
     },
     medsForPet: (petId) => meds().filter((m) => m.petId === petId),
+    replaceAll: (data) => {
+      persistPets(data.pets)
+      persistMeds(data.meds)
+      persistChecks(data.checks)
+    },
   }
 }

@@ -134,3 +134,43 @@ describe('pets', () => {
     expect(s.data.get(`${PETS_KEY}:corrupt`)).toBe('[oops')
   })
 })
+
+describe('backup restore', () => {
+  it('checks() exposes the full map', () => {
+    const store = createLocalStore(fakeStorage())
+    expect(store.checks()).toEqual({})
+    store.toggle(ID)
+    expect(Object.keys(store.checks())).toEqual([ID])
+  })
+  it('replaceAll swaps all three collections and persists them', () => {
+    const s = fakeStorage()
+    const store = createLocalStore(s)
+    store.addPet(DOG)
+    store.addMed(MED)
+    store.toggle(ID)
+    store.replaceAll({
+      pets: [CAT],
+      meds: [CAT_MED],
+      checks: { [CAT_ID]: '2026-07-24T14:00:00.000Z' },
+    })
+    expect(store.pets()).toEqual([CAT])
+    expect(store.meds()).toEqual([CAT_MED])
+    expect(store.isChecked(ID)).toBe(false)
+    expect(store.isChecked(CAT_ID)).toBe(true)
+    // persisted: a fresh store over the same storage sees the new data
+    const fresh = createLocalStore(s)
+    expect(fresh.pets()).toEqual([CAT])
+    expect(fresh.meds()).toEqual([CAT_MED])
+    expect(fresh.isChecked(CAT_ID)).toBe(true)
+  })
+  it('replaceAll with empty collections empties the store', () => {
+    const store = createLocalStore(fakeStorage())
+    store.addPet(DOG)
+    store.addMed(MED)
+    store.toggle(ID)
+    store.replaceAll({ pets: [], meds: [], checks: {} })
+    expect(store.pets()).toEqual([])
+    expect(store.meds()).toEqual([])
+    expect(store.checks()).toEqual({})
+  })
+})

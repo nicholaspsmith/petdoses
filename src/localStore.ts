@@ -5,10 +5,12 @@ import {
   loadList,
   saveList,
   MEDS_KEY,
+  PETS_KEY,
   type Checks,
   type StorageLike,
 } from './storage'
 import type { MedDef } from './schedule'
+import type { Pet } from './pets'
 
 // Local-first store: all state lives in browser storage on this device.
 // No accounts, no network — the free tier by design.
@@ -18,6 +20,11 @@ export interface LocalStore {
   meds(): MedDef[]
   addMed(med: MedDef): void
   deleteMed(medId: string): void
+  pets(): Pet[]
+  addPet(pet: Pet): void
+  updatePet(petId: string, fields: Omit<Pet, 'id'>): void
+  deletePet(petId: string): void
+  medsForPet(petId: string): MedDef[]
 }
 
 export function createLocalStore(storage: StorageLike | null): LocalStore {
@@ -32,6 +39,27 @@ export function createLocalStore(storage: StorageLike | null): LocalStore {
   function persistMeds(next: MedDef[]): void {
     setMeds(next)
     saveList(storage, MEDS_KEY, next)
+  }
+
+  const [pets, setPets] = createSignal<Pet[]>(loadList<Pet>(storage, PETS_KEY))
+
+  function persistPets(next: Pet[]): void {
+    setPets(next)
+    saveList(storage, PETS_KEY, next)
+  }
+
+  // Dose ids are `${medId}:${date}:${slot}` and slug ids cannot contain ':',
+  // so a `${medId}:` prefix match is exact.
+  function deleteChecksFor(medIds: string[]): void {
+    const next = { ...checks() }
+    let changed = false
+    for (const key of Object.keys(next)) {
+      if (medIds.some((id) => key.startsWith(`${id}:`))) {
+        delete next[key]
+        changed = true
+      }
+    }
+    if (changed) persistChecks(next)
   }
 
   return {
@@ -49,6 +77,22 @@ export function createLocalStore(storage: StorageLike | null): LocalStore {
     },
     deleteMed: (medId) => {
       persistMeds(meds().filter((m) => m.id !== medId))
+      deleteChecksFor([medId])
     },
+    pets,
+    addPet: (pet) => {
+      if (pets().some((p) => p.id === pet.id)) return
+      persistPets([...pets(), pet])
+    },
+    updatePet: (petId, fields) => {
+      persistPets(pets().map((p) => (p.id === petId ? { id: p.id, ...fields } : p)))
+    },
+    deletePet: (petId) => {
+      const doomed = meds().filter((m) => m.petId === petId).map((m) => m.id)
+      persistMeds(meds().filter((m) => m.petId !== petId))
+      deleteChecksFor(doomed)
+      persistPets(pets().filter((p) => p.id !== petId))
+    },
+    medsForPet: (petId) => meds().filter((m) => m.petId === petId),
   }
 }

@@ -22,13 +22,14 @@ native iOS, and why).
 
 ## State as of 2026-07-28
 
-- Built and green (62 tests): schedule engine (`schedule.ts`, parameterized
-  over `MedDef[]`, no bundled data), phase builder (`builder.ts`),
-  summaries, med form helpers, local store (`localStore.ts` — meds + checks
-  in localStorage under `petdoses:*` keys, corrupt-value backup), calendar
-  UI, meds screen with add/delete, onboarding empty state, disclaimer
-  footer. CI runs test + build only — **the site is not deployed anywhere
-  yet.**
+- Built and green: schedule engine (`schedule.ts`, parameterized over
+  `MedDef[]`, no bundled data; meds carry a required `petId`), phase
+  builder (`builder.ts`), summaries, med + pet form helpers, local store
+  (`localStore.ts` — pets, meds, checks in localStorage under
+  `petdoses:*` keys, corrupt-value backup, cascade deletes), calendar UI
+  with per-pet filter chips, combined Pets & Meds screen, two-stage
+  onboarding (add pet → add med), disclaimer footer. CI runs test +
+  build only — **the site is not deployed anywhere yet.**
 - Domain: petdoses.com registered at Namecheap; DNS hosted on Cloudflare
   (zone active, operator's second/correct CF account). `api.petdoses.com`
   currently routes to the old DogScheduler Worker — inert, nothing calls
@@ -41,13 +42,12 @@ native iOS, and why).
 Work through brainstorm → spec → plan → TDD execution (superpowers flow;
 specs in `docs/superpowers/specs/`, plans in `docs/superpowers/plans/`).
 
-1. **Pets layer** (decided in brainstorming, not yet designed in detail):
-   pet = name + species only; multi-pet from day one; meds gain a `petId`;
-   calendar shows all pets with filter chips; onboarding becomes
-   add-pet → add-med.
-2. **Export/import backup file** — the free tier's only durability story.
-3. **Privacy note page** ("your data stays on your device").
-4. **Hosting cutover**: choose host, set DNS records, go live at
+Done so far: pets layer (spec
+`docs/superpowers/specs/2026-07-28-pets-layer-design.md`).
+
+1. **Export/import backup file** — the free tier's only durability story.
+2. **Privacy note page** ("your data stays on your device").
+3. **Hosting cutover**: choose host, set DNS records, go live at
    petdoses.com. Gate: the domain must be live before any external user
    (browser-local data binds to the origin).
 

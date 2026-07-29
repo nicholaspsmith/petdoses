@@ -34,8 +34,9 @@ native iOS, and why).
   (zone active, operator's second/correct CF account). `api.petdoses.com`
   currently routes to the old DogScheduler Worker — inert, nothing calls
   it; repoint it when a PetDoses API exists (sync phase).
-- Hosting for the site (GitHub Pages vs Cloudflare Pages) is deliberately
-  undecided — it is part of the cutover design.
+- Hosting decided 2026-07-29: **the site will be hosted on Cloudflare**.
+  DogScheduler stays on GitHub Pages as a legacy app, completely separate
+  from this project (frozen as ever).
 
 ## Next: finish Phase 1 (genericize), then Phase 2+
 
@@ -47,9 +48,9 @@ Done so far: pets layer (spec
 
 1. **Export/import backup file** — the free tier's only durability story.
 2. **Privacy note page** ("your data stays on your device").
-3. **Hosting cutover**: choose host, set DNS records, go live at
-   petdoses.com. Gate: the domain must be live before any external user
-   (browser-local data binds to the origin).
+3. **Hosting cutover**: host decided (Cloudflare); set up the project,
+   DNS records, go live at petdoses.com. Gate: the domain must be live
+   before any external user (browser-local data binds to the origin).
 
 Later phases per the strategy doc: vet-referral landing page + QR;
 reminders (web push); premium sync + billing via a merchant of record,

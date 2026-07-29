@@ -59,9 +59,18 @@ function App() {
                 A calendar of every dose, morning and evening, that remembers
                 what you've given. Your data stays on this device.
               </p>
-              <button type="button" class="today-btn" onClick={() => setScreen('meds')}>
-                Add a medication
-              </button>
+              <Show
+                when={store.pets().length > 0}
+                fallback={
+                  <button type="button" class="today-btn" onClick={() => setScreen('meds')}>
+                    Add your pet
+                  </button>
+                }
+              >
+                <button type="button" class="today-btn" onClick={() => setScreen('meds')}>
+                  Add a medication for {store.pets()[0].name}
+                </button>
+              </Show>
             </div>
           }
         >

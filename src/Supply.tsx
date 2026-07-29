@@ -1,13 +1,18 @@
-import { For } from 'solid-js'
-import { pillInventories } from './schedule'
+import { For, Show } from 'solid-js'
+import { pillInventories, type MedDef } from './schedule'
 import type { LocalStore } from './localStore'
 
-export default function Supply(props: { store: LocalStore }) {
+export default function Supply(props: {
+  meds: MedDef[]
+  store: LocalStore
+  petTag?: (petId: string) => string | undefined
+}) {
   const rows = () =>
-    pillInventories(props.store.meds()).map((inv) => {
+    pillInventories(props.meds).map((inv) => {
       const taken = inv.doseIds.filter((id) => props.store.isChecked(id)).length
       return {
         medId: inv.medId,
+        petId: inv.petId,
         medName: inv.medName,
         unitLabel: inv.unitLabel,
         total: inv.totalUnits,
@@ -19,14 +24,22 @@ export default function Supply(props: { store: LocalStore }) {
     <section class="supply">
       <h3>Pills remaining</h3>
       <For each={rows()}>
-        {(row) => (
-          <div class="supply-row">
-            <span class="dose-name">{row.medName}</span>
-            <span class="supply-count" classList={{ done: row.left === 0 }}>
-              {row.left} of {row.total} {row.unitLabel}
-            </span>
-          </div>
-        )}
+        {(row) => {
+          const tag = () => props.petTag?.(row.petId)
+          return (
+            <div class="supply-row">
+              <span>
+                <Show when={tag()}>
+                  <span class="pet-tag">{tag()} </span>
+                </Show>
+                <span class="dose-name">{row.medName}</span>
+              </span>
+              <span class="supply-count" classList={{ done: row.left === 0 }}>
+                {row.left} of {row.total} {row.unitLabel}
+              </span>
+            </div>
+          )
+        }}
       </For>
     </section>
   )

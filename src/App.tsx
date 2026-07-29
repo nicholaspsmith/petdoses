@@ -7,6 +7,7 @@ import MonthGrid from './MonthGrid'
 import DayDetail from './DayDetail'
 import Supply from './Supply'
 import PetsView from './PetsView'
+import PetChips from './PetChips'
 
 function App() {
   const store = createLocalStore(getLocalStorage())
@@ -15,6 +16,18 @@ function App() {
   const [selected, setSelected] = createSignal(today)
   const [view, setView] = createSignal({ y, m })
   const [screen, setScreen] = createSignal<'calendar' | 'meds'>('calendar')
+
+  // Session-only pet filter; falls back to 'all' if the filtered pet is deleted.
+  const [filter, setFilter] = createSignal<string>('all')
+  const activeFilter = () =>
+    filter() === 'all' || store.pets().some((p) => p.id === filter()) ? filter() : 'all'
+  const visibleMeds = () =>
+    activeFilter() === 'all' ? store.meds() : store.meds().filter((m) => m.petId === activeFilter())
+  // Pet-name tag for dose/supply rows — only in the All view with 2+ pets.
+  const petTag = (petId: string) =>
+    activeFilter() === 'all' && store.pets().length > 1
+      ? store.pets().find((p) => p.id === petId)?.name
+      : undefined
 
   const shiftMonth = (delta: number) => {
     setView((v) => {
@@ -52,11 +65,15 @@ function App() {
             </div>
           }
         >
+          <Show when={store.pets().length > 1}>
+            <PetChips pets={store.pets()} selected={activeFilter()} onSelect={setFilter} />
+          </Show>
           <MonthGrid
             year={view().y}
             month={view().m}
             selected={selected()}
             today={today}
+            meds={visibleMeds()}
             store={store}
             onSelect={setSelected}
             onPrev={() => shiftMonth(-1)}
@@ -66,8 +83,8 @@ function App() {
               setSelected(today)
             }}
           />
-          <DayDetail date={selected()} store={store} />
-          <Supply store={store} />
+          <DayDetail date={selected()} meds={visibleMeds()} store={store} petTag={petTag} />
+          <Supply meds={visibleMeds()} store={store} petTag={petTag} />
         </Show>
         <footer class="disclaimer">
           PetDoses records what you've given — it is not veterinary advice.

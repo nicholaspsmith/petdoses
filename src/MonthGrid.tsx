@@ -1,5 +1,5 @@
 import { For, Index } from 'solid-js'
-import { dosesForDay } from './schedule'
+import { dosesForDay, type MedDef } from './schedule'
 import { toDateStr, daysInMonth, firstWeekday, monthLabel } from './dates'
 import type { LocalStore } from './localStore'
 
@@ -8,6 +8,7 @@ interface Props {
   month: number // 1-12
   selected: string
   today: string
+  meds: MedDef[]
   store: LocalStore
   onSelect(date: string): void
   onPrev(): void
@@ -53,7 +54,7 @@ export default function MonthGrid(props: Props) {
               >
                 <span class="day-num">{i + 1}</span>
                 <span class="dots">
-                  <For each={dosesForDay(props.store.meds(), date())}>
+                  <For each={dosesForDay(props.meds, date())}>
                     {(dose) => (
                       <span
                         classList={{

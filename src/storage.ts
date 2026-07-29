@@ -5,6 +5,7 @@ export interface StorageLike {
 
 export const CHECKS_KEY = 'petdoses:checks:v1'
 export const MEDS_KEY = 'petdoses:meds:v1'
+export const PETS_KEY = 'petdoses:pets:v1'
 
 // doseId -> ISO timestamp of when the user checked it off.
 export type Checks = Record<string, string>
@@ -53,13 +54,13 @@ export function saveChecks(storage: StorageLike | null, checks: Checks): void {
   saveJson(storage, CHECKS_KEY, checks)
 }
 
-export function loadMedList<T>(storage: StorageLike | null): T[] {
-  const parsed = loadJson(storage, MEDS_KEY)
+export function loadList<T>(storage: StorageLike | null, key: string): T[] {
+  const parsed = loadJson(storage, key)
   return Array.isArray(parsed) ? (parsed as T[]) : []
 }
 
-export function saveMedList<T>(storage: StorageLike | null, meds: T[]): void {
-  saveJson(storage, MEDS_KEY, meds)
+export function saveList<T>(storage: StorageLike | null, key: string, items: T[]): void {
+  saveJson(storage, key, items)
 }
 
 export function getLocalStorage(): StorageLike | null {

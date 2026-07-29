@@ -1,16 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { createLocalStore } from './localStore'
-import { CHECKS_KEY, MEDS_KEY, type StorageLike } from './storage'
+import { CHECKS_KEY, MEDS_KEY } from './storage'
 import type { MedDef } from './schedule'
-
-function fakeStorage(initial: Record<string, string> = {}): StorageLike & { data: Map<string, string> } {
-  const data = new Map(Object.entries(initial))
-  return {
-    data,
-    getItem: (k) => (data.has(k) ? data.get(k)! : null),
-    setItem: (k, v) => void data.set(k, v),
-  }
-}
+import { fakeStorage } from './testStorage'
 
 const MED: MedDef = {
   id: 'gabapentin-0000',

@@ -2,8 +2,9 @@ import { createSignal } from 'solid-js'
 import {
   loadChecks,
   saveChecks,
-  loadMedList,
-  saveMedList,
+  loadList,
+  saveList,
+  MEDS_KEY,
   type Checks,
   type StorageLike,
 } from './storage'
@@ -21,7 +22,7 @@ export interface LocalStore {
 
 export function createLocalStore(storage: StorageLike | null): LocalStore {
   const [checks, setChecks] = createSignal<Checks>(loadChecks(storage))
-  const [meds, setMeds] = createSignal<MedDef[]>(loadMedList<MedDef>(storage))
+  const [meds, setMeds] = createSignal<MedDef[]>(loadList<MedDef>(storage, MEDS_KEY))
 
   function persistChecks(next: Checks): void {
     setChecks(next)
@@ -30,7 +31,7 @@ export function createLocalStore(storage: StorageLike | null): LocalStore {
 
   function persistMeds(next: MedDef[]): void {
     setMeds(next)
-    saveMedList(storage, next)
+    saveList(storage, MEDS_KEY, next)
   }
 
   return {

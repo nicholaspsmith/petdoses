@@ -454,3 +454,42 @@ h1 {
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.settings-section {
+  margin-top: 24px;
+}
+
+.settings-section h3 {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin: 0 0 6px;
+}
+
+.settings-copy {
+  opacity: 0.7;
+  font-size: 0.9rem;
+  margin: 0 0 10px;
+  max-width: 44ch;
+}
+
+.backup-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.backup-actions .today-btn,
+.backup-actions .nav-btn {
+  padding: 0 12px;
+}
+
+.file-hidden {
+  display: none;
+}

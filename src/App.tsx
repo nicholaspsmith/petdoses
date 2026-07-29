@@ -1,4 +1,4 @@
-import { createSignal, Show } from 'solid-js'
+import { createSignal, Show, Switch, Match } from 'solid-js'
 import './App.css'
 import { todayStr, parseDateStr } from './dates'
 import { getLocalStorage } from './storage'
@@ -8,6 +8,7 @@ import DayDetail from './DayDetail'
 import Supply from './Supply'
 import PetsView from './PetsView'
 import PetChips from './PetChips'
+import SettingsView from './SettingsView'
 
 function App() {
   const store = createLocalStore(getLocalStorage())
@@ -15,7 +16,7 @@ function App() {
   const { y, m } = parseDateStr(today)
   const [selected, setSelected] = createSignal(today)
   const [view, setView] = createSignal({ y, m })
-  const [screen, setScreen] = createSignal<'calendar' | 'meds'>('calendar')
+  const [screen, setScreen] = createSignal<'calendar' | 'meds' | 'settings'>('calendar')
 
   // Session-only pet filter; falls back to 'all' if the filtered pet is deleted.
   const [filter, setFilter] = createSignal<string>('all')
@@ -40,15 +41,24 @@ function App() {
 
   return (
     <main>
-      <Show
-        when={screen() === 'calendar'}
-        fallback={<PetsView store={store} onBack={() => setScreen('calendar')} />}
-      >
+      <Switch>
+        <Match when={screen() === 'meds'}>
+          <PetsView store={store} onBack={() => setScreen('calendar')} />
+        </Match>
+        <Match when={screen() === 'settings'}>
+          <SettingsView store={store} onBack={() => setScreen('calendar')} />
+        </Match>
+        <Match when={screen() === 'calendar'}>
         <header class="app-header">
           <h1>PetDoses</h1>
-          <button type="button" class="nav-btn" onClick={() => setScreen('meds')}>
-            Pets
-          </button>
+          <span class="header-actions">
+            <button type="button" class="nav-btn" onClick={() => setScreen('meds')}>
+              Pets
+            </button>
+            <button type="button" class="nav-btn" aria-label="Settings" onClick={() => setScreen('settings')}>
+              ⚙
+            </button>
+          </span>
         </header>
         <Show
           when={store.meds().length > 0}
@@ -99,7 +109,8 @@ function App() {
           PetDoses records what you've given — it is not veterinary advice.
           Always follow your vet's instructions.
         </footer>
-      </Show>
+        </Match>
+      </Switch>
     </main>
   )
 }

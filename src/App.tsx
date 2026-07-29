@@ -6,7 +6,7 @@ import { createLocalStore } from './localStore'
 import MonthGrid from './MonthGrid'
 import DayDetail from './DayDetail'
 import Supply from './Supply'
-import MedsView from './MedsView'
+import PetsView from './PetsView'
 
 function App() {
   const store = createLocalStore(getLocalStorage())
@@ -29,12 +29,12 @@ function App() {
     <main>
       <Show
         when={screen() === 'calendar'}
-        fallback={<MedsView store={store} onBack={() => setScreen('calendar')} />}
+        fallback={<PetsView store={store} onBack={() => setScreen('calendar')} />}
       >
         <header class="app-header">
           <h1>PetDoses</h1>
           <button type="button" class="nav-btn" onClick={() => setScreen('meds')}>
-            Meds
+            Pets
           </button>
         </header>
         <Show

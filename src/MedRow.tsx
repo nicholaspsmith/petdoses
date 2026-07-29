@@ -1,10 +1,9 @@
-import { createSignal, For, Show } from 'solid-js'
+import { createSignal, Show } from 'solid-js'
 import type { MedDef } from './schedule'
-import AddMedForm from './AddMedForm'
 import { scheduleSummary } from './summary'
 import type { LocalStore } from './localStore'
 
-function MedRow(props: { med: MedDef; store: LocalStore }) {
+export default function MedRow(props: { med: MedDef; store: LocalStore }) {
   const [confirming, setConfirming] = createSignal(false)
   return (
     <div class="med-row">
@@ -39,25 +38,6 @@ function MedRow(props: { med: MedDef; store: LocalStore }) {
           ✕
         </button>
       </Show>
-    </div>
-  )
-}
-
-export default function MedsView(props: { store: LocalStore; onBack(): void }) {
-  return (
-    <div class="meds-view">
-      <header class="app-header">
-        <h1>Medications</h1>
-        <button type="button" class="nav-btn" onClick={() => props.onBack()}>
-          Done
-        </button>
-      </header>
-      <Show when={props.store.meds().length === 0}>
-        <p class="med-notice">No medications yet — add the first one below.</p>
-      </Show>
-      <For each={props.store.meds()}>{(med) => <MedRow med={med} store={props.store} />}</For>
-      {/* placeholder petId: MedsView is replaced by PetsView in the pets-layer plan */}
-      <AddMedForm store={props.store} petId="pet-pending" />
     </div>
   )
 }

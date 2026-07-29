@@ -36,7 +36,7 @@ interface Preview {
   error: string
 }
 
-export default function AddMedForm(props: { store: LocalStore }) {
+export default function AddMedForm(props: { store: LocalStore; petId: string }) {
   const [name, setName] = createSignal('')
   const [amount, setAmount] = createSignal('1')
   const [unit, setUnit] = createSignal<Unit>('tablets')
@@ -50,6 +50,7 @@ export default function AddMedForm(props: { store: LocalStore }) {
     try {
       const med = buildMedDef(
         {
+          petId: props.petId,
           name: name() || 'preview',
           amount: Number(amount()),
           unit: unit(),
@@ -75,6 +76,7 @@ export default function AddMedForm(props: { store: LocalStore }) {
     setSaved('')
     try {
       const med = buildMedDef({
+        petId: props.petId,
         name: name(),
         amount: Number(amount()),
         unit: unit(),

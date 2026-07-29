@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { dosesForDay, pillInventories, expandMed, type Dose } from './schedule'
-import { TEST_MEDS } from './testFixtures'
+import { TEST_MEDS, TEST_PETS } from './testFixtures'
 import { addDays } from './dates'
 
 // Collect every dose in an inclusive date range (ISO strings compare correctly).
@@ -81,6 +81,26 @@ describe('dose identity and shape', () => {
   })
   it('day before any schedule is empty', () => {
     expect(dosesForDay(TEST_MEDS, '2026-07-20')).toEqual([])
+  })
+})
+
+describe('petId propagation', () => {
+  it('fixtures split across the two test pets', () => {
+    expect(TEST_PETS.map((p) => p.id)).toEqual(['test-dog', 'test-cat'])
+    expect(TEST_MEDS.map((m) => m.petId)).toEqual([
+      'test-dog', 'test-dog', 'test-dog', 'test-cat', 'test-cat',
+    ])
+  })
+  it('doses carry their med petId', () => {
+    const dose = dosesForDay(TEST_MEDS, '2026-07-22').find((d) => d.medId === 'taper-med')!
+    expect(dose.petId).toBe('test-dog')
+    const monthly = dosesForDay(TEST_MEDS, '2026-08-14').find((d) => d.medId === 'monthly-med')!
+    expect(monthly.petId).toBe('test-cat')
+  })
+  it('pill inventories carry petId', () => {
+    expect(pillInventories(TEST_MEDS).map((i) => i.petId)).toEqual([
+      'test-dog', 'test-dog', 'test-dog',
+    ])
   })
 })
 

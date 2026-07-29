@@ -17,6 +17,7 @@ describe('deriveDoseText', () => {
 
 describe('buildMedDef', () => {
   const base = {
+    petId: 'test-dog',
     name: 'Gabapentin',
     amount: 2,
     unit: 'capsules' as const,
@@ -27,6 +28,7 @@ describe('buildMedDef', () => {
   it('builds a countable med with units and phases', () => {
     expect(buildMedDef(base, fixedRand)).toEqual({
       id: 'gabapentin-0000',
+      petId: 'test-dog',
       name: 'Gabapentin',
       doseText: '2 capsules by mouth',
       unitsPerDose: 2,

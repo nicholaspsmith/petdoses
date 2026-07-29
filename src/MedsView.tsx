@@ -56,7 +56,8 @@ export default function MedsView(props: { store: LocalStore; onBack(): void }) {
         <p class="med-notice">No medications yet — add the first one below.</p>
       </Show>
       <For each={props.store.meds()}>{(med) => <MedRow med={med} store={props.store} />}</For>
-      <AddMedForm store={props.store} />
+      {/* placeholder petId: MedsView is replaced by PetsView in the pets-layer plan */}
+      <AddMedForm store={props.store} petId="pet-pending" />
     </div>
   )
 }

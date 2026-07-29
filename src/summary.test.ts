@@ -17,9 +17,9 @@ describe('scheduleSummary', () => {
     expect(scheduleSummary(med('weekly-med'))).toBe('weekly ×4, then monthly on the 11th, ongoing')
   })
   it('uses correct ordinals', () => {
-    expect(scheduleSummary({ id: 'x', name: 'X', doseText: 'x', monthly: { dayOfMonth: 21, slot: 'am', start: '2026-08-21' } }))
+    expect(scheduleSummary({ id: 'x', petId: 'test-cat', name: 'X', doseText: 'x', monthly: { dayOfMonth: 21, slot: 'am', start: '2026-08-21' } }))
       .toBe('monthly on the 21st, ongoing')
-    expect(scheduleSummary({ id: 'x', name: 'X', doseText: 'x', monthly: { dayOfMonth: 12, slot: 'am', start: '2026-08-12' } }))
+    expect(scheduleSummary({ id: 'x', petId: 'test-cat', name: 'X', doseText: 'x', monthly: { dayOfMonth: 12, slot: 'am', start: '2026-08-12' } }))
       .toBe('monthly on the 12th, ongoing')
   })
 })

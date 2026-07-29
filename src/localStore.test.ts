@@ -6,6 +6,7 @@ import { fakeStorage } from './testStorage'
 
 const MED: MedDef = {
   id: 'gabapentin-0000',
+  petId: 'test-dog',
   name: 'Gabapentin',
   doseText: '2 capsules by mouth',
   phases: [{ start: '2026-07-24', startSlot: 'am', intervalSlots: 2, count: 3 }],

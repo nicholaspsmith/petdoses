@@ -1,4 +1,10 @@
 import type { MedDef } from './schedule'
+import type { Pet } from './pets'
+
+export const TEST_PETS: Pet[] = [
+  { id: 'test-dog', name: 'Test Dog', species: 'dog' },
+  { id: 'test-cat', name: 'Test Cat', species: 'cat' },
+]
 
 // Test-only fixtures. Structurally identical to real-world regimens the
 // engine was originally verified against (a steroid taper, a q12h course,
@@ -8,6 +14,7 @@ import type { MedDef } from './schedule'
 export const TEST_MEDS: MedDef[] = [
   {
     id: 'taper-med',
+    petId: 'test-dog',
     name: 'Taper Med',
     doseText: '2 tablets by mouth',
     unitsPerDose: 2,
@@ -20,6 +27,7 @@ export const TEST_MEDS: MedDef[] = [
   },
   {
     id: 'twice-daily-med',
+    petId: 'test-dog',
     name: 'Twice Daily Med',
     doseText: '3 capsules by mouth',
     unitsPerDose: 3,
@@ -28,6 +36,7 @@ export const TEST_MEDS: MedDef[] = [
   },
   {
     id: 'daily-med',
+    petId: 'test-dog',
     name: 'Daily Med',
     doseText: '4 tablets by mouth',
     unitsPerDose: 4,
@@ -36,12 +45,14 @@ export const TEST_MEDS: MedDef[] = [
   },
   {
     id: 'monthly-med',
+    petId: 'test-cat',
     name: 'Monthly Med',
     doseText: '1 dose',
     monthly: { dayOfMonth: 14, slot: 'pm', start: '2026-08-14' },
   },
   {
     id: 'weekly-med',
+    petId: 'test-cat',
     name: 'Weekly Med',
     doseText: '0.7 mL injection',
     phases: [{ start: '2026-07-21', startSlot: 'pm', intervalSlots: 14, count: 4 }],

@@ -5,6 +5,7 @@ import { slugId } from './ids'
 export type Unit = 'tablets' | 'capsules' | 'mL' | 'dose'
 
 export interface MedFormInput {
+  petId: string
   name: string
   amount: number
   unit: Unit
@@ -25,6 +26,7 @@ export function buildMedDef(input: MedFormInput, rand: () => number = Math.rando
   const { phases, monthly } = buildPhases(input.startDate, input.startSlot, input.rows)
   const med: MedDef = {
     id: slugId(input.name, rand),
+    petId: input.petId,
     name: input.name.trim(),
     doseText: deriveDoseText(input.amount, input.unit),
   }

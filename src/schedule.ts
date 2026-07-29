@@ -5,6 +5,7 @@ export type Slot = 'am' | 'pm'
 export interface Dose {
   id: string
   medId: string
+  petId: string
   medName: string
   doseText: string
   date: string // YYYY-MM-DD, local time
@@ -29,6 +30,7 @@ export interface Monthly {
 
 export interface MedDef {
   id: string
+  petId: string
   name: string
   doseText: string
   phases?: Phase[]
@@ -46,6 +48,7 @@ function makeDose(med: MedDef, date: string, slot: Slot): Dose {
   return {
     id: doseId(med.id, date, slot),
     medId: med.id,
+    petId: med.petId,
     medName: med.name,
     doseText: med.doseText,
     date,
@@ -79,6 +82,7 @@ function monthlyDoseForDay(med: MedDef, date: string): Dose | null {
 
 export interface PillInventory {
   medId: string
+  petId: string
   medName: string
   unitsPerDose: number
   unitLabel: string
@@ -95,6 +99,7 @@ export function pillInventories(meds: MedDef[]): PillInventory[] {
     const doses = expandMed(med)
     result.push({
       medId: med.id,
+      petId: med.petId,
       medName: med.name,
       unitsPerDose: med.unitsPerDose,
       unitLabel: med.unitLabel,

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { buildMedDef, deriveDoseText, slugId } from './medForm'
+import { buildMedDef, deriveDoseText } from './medForm'
 
 const fixedRand = () => 0 // suffix "0000"
 
@@ -12,15 +12,6 @@ describe('deriveDoseText', () => {
     [2, 'dose', '2 doses'],
   ] as const)('%s %s -> %s', (amount, unit, expected) => {
     expect(deriveDoseText(amount, unit)).toBe(expected)
-  })
-})
-
-describe('slugId', () => {
-  it('slugifies and suffixes', () => {
-    expect(slugId('Gabapentin 100mg!', fixedRand)).toBe('gabapentin-100mg-0000')
-  })
-  it('falls back for all-symbol names', () => {
-    expect(slugId('★★★', fixedRand)).toBe('med-0000')
   })
 })
 

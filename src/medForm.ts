@@ -1,5 +1,6 @@
 import type { MedDef, Slot } from './schedule'
 import { buildPhases, type BuilderRow } from './builder'
+import { slugId } from './ids'
 
 export type Unit = 'tablets' | 'capsules' | 'mL' | 'dose'
 
@@ -16,16 +17,6 @@ export function deriveDoseText(amount: number, unit: Unit): string {
   if (unit === 'tablets' || unit === 'capsules') return `${amount} ${unit} by mouth`
   if (unit === 'mL') return `${amount} mL`
   return amount === 1 ? '1 dose' : `${amount} doses`
-}
-
-const BASE36 = '0123456789abcdefghijklmnopqrstuvwxyz'
-
-export function slugId(name: string, rand: () => number = Math.random): string {
-  const slug =
-    name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'med'
-  let suffix = ''
-  for (let i = 0; i < 4; i++) suffix += BASE36[Math.floor(rand() * 36)]
-  return `${slug}-${suffix}`
 }
 
 export function buildMedDef(input: MedFormInput, rand: () => number = Math.random): MedDef {

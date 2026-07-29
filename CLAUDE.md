@@ -20,7 +20,7 @@ native iOS, and why).
   single-token model serves exactly one household — do not resurrect it).
 - No new runtime dependencies (`solid-js` only).
 
-## State as of 2026-07-28
+## State as of 2026-07-29
 
 - Built and green: schedule engine (`schedule.ts`, parameterized over
   `MedDef[]`, no bundled data; meds carry a required `petId`), phase
@@ -28,8 +28,10 @@ native iOS, and why).
   (`localStore.ts` — pets, meds, checks in localStorage under
   `petdoses:*` keys, corrupt-value backup, cascade deletes), calendar UI
   with per-pet filter chips, combined Pets & Meds screen, two-stage
-  onboarding (add pet → add med), disclaimer footer. CI runs test +
-  build only — **the site is not deployed anywhere yet.**
+  onboarding (add pet → add med), settings screen with backup
+  export/import (versioned JSON, replace-all restore) and privacy note,
+  disclaimer footer. CI runs test + build only — **the site is not
+  deployed anywhere yet.**
 - Domain: petdoses.com registered at Namecheap; DNS hosted on Cloudflare
   (zone active, operator's second/correct CF account). `api.petdoses.com`
   currently routes to the old DogScheduler Worker — inert, nothing calls
@@ -44,11 +46,11 @@ Work through brainstorm → spec → plan → TDD execution (superpowers flow;
 specs in `docs/superpowers/specs/`, plans in `docs/superpowers/plans/`).
 
 Done so far: pets layer (spec
-`docs/superpowers/specs/2026-07-28-pets-layer-design.md`).
+`docs/superpowers/specs/2026-07-28-pets-layer-design.md`); backup
+export/import + settings + privacy note (spec
+`docs/superpowers/specs/2026-07-29-backup-export-import-design.md`).
 
-1. **Export/import backup file** — the free tier's only durability story.
-2. **Privacy note page** ("your data stays on your device").
-3. **Hosting cutover**: host decided (Cloudflare); set up the project,
+1. **Hosting cutover**: host decided (Cloudflare); set up the project,
    DNS records, go live at petdoses.com. Gate: the domain must be live
    before any external user (browser-local data binds to the origin).
 

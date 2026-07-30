@@ -45,23 +45,49 @@ native iOS, and why).
 - DogScheduler stays on GitHub Pages as a legacy app, completely separate
   from this project (frozen as ever).
 
-## Next: finish Phase 1 (genericize), then Phase 2+
+## Phase 1 (genericize): COMPLETE 2026-07-29
 
-Work through brainstorm → spec → plan → TDD execution (superpowers flow;
-specs in `docs/superpowers/specs/`, plans in `docs/superpowers/plans/`).
-
-Done so far: pets layer (spec
-`docs/superpowers/specs/2026-07-28-pets-layer-design.md`); backup
+Pets layer (spec `docs/superpowers/specs/2026-07-28-pets-layer-design.md`,
+plan `docs/superpowers/plans/2026-07-28-pets-layer.md`); backup
 export/import + settings + privacy note (spec
-`docs/superpowers/specs/2026-07-29-backup-export-import-design.md`).
+`docs/superpowers/specs/2026-07-29-backup-export-import-design.md`, plan
+`docs/superpowers/plans/2026-07-29-backup-export-import.md`); hosting
+cutover (live at petdoses.com; origin gate met).
 
-1. **Hosting cutover — done 2026-07-29** (live at petdoses.com; origin
-   gate met). Remaining loose end: www→apex redirect (operator: DNS
-   record for www + "Redirect from WWW to Root" rule template).
+## Next: Phase 2 — vet-referral polish (NOT yet designed)
 
-Later phases per the strategy doc: vet-referral landing page + QR;
-reminders (web push); premium sync + billing via a merchant of record,
-only on demonstrated demand.
+Nothing brainstormed or spec'd. A new session starts with brainstorm →
+spec → plan → TDD execution (superpowers flow; specs in
+`docs/superpowers/specs/`, plans in `docs/superpowers/plans/`). Scope per
+the strategy doc:
+
+- Landing page with QR code (vet hands owner a QR → opens the PWA).
+- Per-platform install instructions (iPhone Safari, Android Chrome).
+- Consider pulling the service worker forward from Phase 3 (see gaps) —
+  the vision promises "works offline" and vet-referred users will
+  install to home screen.
+
+## Later phases (strategy doc is the umbrella)
+
+- **Phase 3 — reminders**: web push for due doses. Hard prerequisites: a
+  service worker, and on iOS an installed (home-screen) PWA. Free while
+  there is no billing; likely premium headliner later.
+- **Phase 4 — premium sync + billing**: only on demonstrated demand.
+  Merchant of record (Paddle / Lemon Squeezy). Sync needs a per-account
+  redesign — never resurrect the old single-token model. Recreate
+  `api.petdoses.com` (deleted during cutover) when this begins.
+
+## Known gaps / loose ends
+
+- **No service worker**: manifest + icons only — installable, but no
+  offline support and no push capability. Needed by Phase 3 at the
+  latest; offline arguably belongs in Phase 2.
+- **www→apex redirect pending** (operator, dashboard): proxied A record
+  `www` → `192.0.2.1`, then Rules → template "Redirect from WWW to
+  Root". Until then www.petdoses.com does not resolve.
+- **Deploys are manual** (`npm run build && npx wrangler deploy`).
+  Optional later: Workers Builds git integration (operator connects the
+  repo in the dashboard) for push-to-deploy.
 
 ## Conventions and gotchas
 

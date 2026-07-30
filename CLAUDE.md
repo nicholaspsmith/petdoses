@@ -30,14 +30,19 @@ native iOS, and why).
   with per-pet filter chips, combined Pets & Meds screen, two-stage
   onboarding (add pet → add med), settings screen with backup
   export/import (versioned JSON, replace-all restore) and privacy note,
-  disclaimer footer. CI runs test + build only — **the site is not
-  deployed anywhere yet.**
-- Domain: petdoses.com registered at Namecheap; DNS hosted on Cloudflare
-  (zone active, operator's second/correct CF account). `api.petdoses.com`
-  currently routes to the old DogScheduler Worker — inert, nothing calls
-  it; repoint it when a PetDoses API exists (sync phase).
-- Hosting decided 2026-07-29: **the site will be hosted on Cloudflare**.
-  DogScheduler stays on GitHub Pages as a legacy app, completely separate
+  disclaimer footer. CI runs test + build only.
+- **Live at https://petdoses.com since 2026-07-29** — assets-only
+  Cloudflare Worker (`wrangler.jsonc`; account
+  nicholaspsmith.software@gmail.com, worker name `petdoses`).
+  workers.dev + preview URLs deliberately disabled: exactly one public
+  origin, because browser-local data binds to it. Deploys are manual:
+  `npm run build && npx wrangler deploy`.
+- Domain: petdoses.com registered at Namecheap; DNS on Cloudflare. During
+  the cutover the operator cleared ALL A/AAAA/CNAME records: the old
+  `api.petdoses.com` → DogScheduler-Worker record is GONE (was inert;
+  recreate a proper one in the sync phase) and `www` has no record —
+  www→apex redirect still pending (DNS record + redirect rule).
+- DogScheduler stays on GitHub Pages as a legacy app, completely separate
   from this project (frozen as ever).
 
 ## Next: finish Phase 1 (genericize), then Phase 2+
@@ -50,9 +55,9 @@ Done so far: pets layer (spec
 export/import + settings + privacy note (spec
 `docs/superpowers/specs/2026-07-29-backup-export-import-design.md`).
 
-1. **Hosting cutover**: host decided (Cloudflare); set up the project,
-   DNS records, go live at petdoses.com. Gate: the domain must be live
-   before any external user (browser-local data binds to the origin).
+1. **Hosting cutover — done 2026-07-29** (live at petdoses.com; origin
+   gate met). Remaining loose end: www→apex redirect (operator: DNS
+   record for www + "Redirect from WWW to Root" rule template).
 
 Later phases per the strategy doc: vet-referral landing page + QR;
 reminders (web push); premium sync + billing via a merchant of record,

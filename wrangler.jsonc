@@ -1,0 +1,16 @@
+// PetDoses — assets-only Worker serving the Vite build.
+// Free tier is local-only: no server code, no bindings — static files only.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "petdoses",
+  "compatibility_date": "2026-07-29",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  },
+  // Exactly one public origin: browser-local data binds to it. workers.dev
+  // and preview URLs stay off so no second origin can serve the app.
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "petdoses.com", "custom_domain": true }]
+}
